@@ -35,18 +35,18 @@ if user_query:
     if 'search' in user_query or 'find' in user_query:
         keyword = st.text_input("Enter keyword to search products:")
         if keyword:
-            results = df[df['Description'].str.contains(keyword, na=False)]
+            results = df_cleaned[df_cleaned['Description'].str.contains(keyword, na=False)]
             st.write(results[['StockCode', 'Description', 'UnitPrice']].drop_duplicates().head(10))
 
     elif 'price' in user_query or 'range' in user_query:
         min_price = st.number_input("Min price", min_value=0.0, value=0.0)
         max_price = st.number_input("Max price", min_value=0.0, value=10.0)
         if min_price < max_price:
-            results = df[(df['UnitPrice'] >= min_price) & (df['UnitPrice'] <= max_price)]
+            results = df_cleaned[(df_cleaned['UnitPrice'] >= min_price) & (df_cleaned['UnitPrice'] <= max_price)]
             st.write(results[['Description', 'UnitPrice']].drop_duplicates().head(10))
 
     elif 'top' in user_query or 'popular' in user_query:
-        top_items = df.groupby('Description')['Quantity'].sum().sort_values(ascending=False).head(10)
+        top_items = df_cleaned.groupby('Description')['Quantity'].sum().sort_values(ascending=False).head(10)
         st.write(top_items.reset_index())
 
     else:
