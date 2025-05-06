@@ -53,6 +53,4 @@ def chatbot():
         else:
             st.write("Sorry, I didn't understand that. Try asking about products or prices.")
 
-if __name__ == "__main__":
-    chatbot()
 
