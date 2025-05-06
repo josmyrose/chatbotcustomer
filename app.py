@@ -26,7 +26,7 @@ user_input = st.text_input("Ask me about products, prices, or popular items:")
 st.write("Welcome to RetailBot! Ask me about products, prices, or popular items.")
 st.write("If you ask about products,please type find or search.")
 st.write("If you ask about popular items,please type top or popular")
-st.text_input("Type 'exit' to leave.")
+st.write("Type 'exit' to leave.")
     # Streamlit UI
 
 while True:
