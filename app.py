@@ -27,7 +27,7 @@ st.write("Welcome to RetailBot! Ask me about products, prices, or popular items.
 st.write("If you ask about products,please type find or search.")
 st.write("If you ask about popular items,please type top or popular")
 st.write("Type 'exit' to leave.")
-user_query = st.text_input("Ask about products, prices, or popular items:")
+#user_query = st.text_input("Ask about products, prices, or popular items:")
 while True:
     user_query = st.text_input("Ask your query (type 'exit' to stop):")
     
@@ -38,6 +38,7 @@ while True:
     user_query = user_query.lower()
     if 'exit' in user_query:
         st.success("Thanks for using the assistant!")
+        break
     
     if 'search' in user_query or 'find' in user_query:
         keyword = st.text_input("Enter keyword to search products:")
