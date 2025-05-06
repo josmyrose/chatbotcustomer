@@ -1,4 +1,4 @@
-import streamlit as st
+﻿import streamlit as st
 import pandas as pd
 
 @st.cache_data
@@ -15,33 +15,43 @@ def products_in_price_range(min_price, max_price):
 def top_selling_products():
     top_items = df_cleaned.groupby('Description')['Quantity'].sum().sort_values(ascending=False).head(10)
     return top_items.reset_index()
+st.title("🛍️ RetailBot - Product Assistant")
+
+# Maintain chat history
+if "history" not in st.session_state:
+    st.session_state.history = []
+
+user_input = st.text_input("Ask me about products, prices, or popular items:")
+
 def chatbot():
-    print("Welcome to RetailBot! Ask me about products, prices, or popular items.")
-    print("If you ask about products,please type find or search.")
-    print("If you ask about popular items,please type top or popular")
-    print("Type 'exit' to leave.")
+    st.write("Welcome to RetailBot! Ask me about products, prices, or popular items.")
+    st.write("If you ask about products,please type find or search.")
+    st.write("If you ask about popular items,please type top or popular")
+    st.text_input("Type 'exit' to leave.")
+    # Streamlit UI
+
     while True:
-        user_input = input("\nYou: ").lower()
+        user_input = st.text_input("\nYou: ").lower()
 
         if 'exit' in user_input:
-            print("Goodbye!")
+            st.write("Goodbye!")
             break
         elif 'find' in user_input or 'search' in user_input:
-            keyword = input("Enter product keyword: ")
+            keyword = st.text_input("Enter product keyword: ")
             results = search_product(keyword)
-            print(results if not results.empty else "No matching products found.")
+            st.write(results if not results.empty else "No matching products found.")
         elif 'price' in user_input or 'range' in user_input:
             try:
                 min_price = float(input("Min price: "))
                 max_price = float(input("Max price: "))
                 results = products_in_price_range(min_price, max_price)
-                print(results if not results.empty else "No products in that price range.")
+                st.write(results if not results.empty else "No products in that price range.")
             except ValueError:
-                print("Please enter valid numbers.")
+                st.write("Please enter valid numbers.")
         elif 'top' in user_input or 'popular' in user_input:
-            print(top_selling_products())
+            st.write(top_selling_products())
         else:
-            print("Sorry, I didn't understand that. Try asking about products or prices.")
+            st.write("Sorry, I didn't understand that. Try asking about products or prices.")
 
 if __name__ == "__main__":
     chatbot()
