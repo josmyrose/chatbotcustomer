@@ -23,14 +23,13 @@ if "history" not in st.session_state:
 
 user_input = st.text_input("Ask me about products, prices, or popular items:")
 
-def chatbot():
-    st.write("Welcome to RetailBot! Ask me about products, prices, or popular items.")
-    st.write("If you ask about products,please type find or search.")
-    st.write("If you ask about popular items,please type top or popular")
-    st.text_input("Type 'exit' to leave.")
+st.write("Welcome to RetailBot! Ask me about products, prices, or popular items.")
+st.write("If you ask about products,please type find or search.")
+st.write("If you ask about popular items,please type top or popular")
+st.text_input("Type 'exit' to leave.")
     # Streamlit UI
 
-    while True:
+while True:
         user_input = st.text_input("\nYou: ").lower()
 
         if 'exit' in user_input:
