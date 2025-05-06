@@ -21,16 +21,17 @@ st.title("🛍️ RetailBot - Product Assistant")
 if "history" not in st.session_state:
     st.session_state.history = []
 
-user_input = st.text_input("Ask me about products, prices, or popular items:")
+
 
 st.write("Welcome to RetailBot! Ask me about products, prices, or popular items.")
 st.write("If you ask about products,please type find or search.")
 st.write("If you ask about popular items,please type top or popular")
 st.write("Type 'exit' to leave.")
+user_input = st.text_input("Ask me about products, prices, or popular items:").lower()
     # Streamlit UI
 
 while True:
-        user_input = st.text_input("\nYou: ").lower()
+        #user_input = st.text_input("\nYou: ").lower()
 
         if 'exit' in user_input:
             st.write("Goodbye!")
@@ -41,8 +42,8 @@ while True:
             st.write(results if not results.empty else "No matching products found.")
         elif 'price' in user_input or 'range' in user_input:
             try:
-                min_price = float(input("Min price: "))
-                max_price = float(input("Max price: "))
+                min_price = float(st.text_input("Min price: "))
+                max_price = float(st.text_input("Max price: "))
                 results = products_in_price_range(min_price, max_price)
                 st.write(results if not results.empty else "No products in that price range.")
             except ValueError:
