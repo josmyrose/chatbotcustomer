@@ -28,9 +28,16 @@ st.write("If you ask about products,please type find or search.")
 st.write("If you ask about popular items,please type top or popular")
 st.write("Type 'exit' to leave.")
 user_query = st.text_input("Ask about products, prices, or popular items:")
+while True:
+    user_query = st.text_input("Ask your query (type 'exit' to stop):")
+    
+    if not user_query:
+        st.stop()  # Wait for user input
 
-if user_query:
+
     user_query = user_query.lower()
+    if 'exit' in user_query:
+        st.success("Thanks for using the assistant!")
     
     if 'search' in user_query or 'find' in user_query:
         keyword = st.text_input("Enter keyword to search products:")
@@ -44,7 +51,8 @@ if user_query:
         if min_price < max_price:
             results = df_cleaned[(df_cleaned['UnitPrice'] >= min_price) & (df_cleaned['UnitPrice'] <= max_price)]
             st.write(results[['Description', 'UnitPrice']].drop_duplicates().head(10))
-
+        else:
+            st.warning("Min price should be less than Max price.")
     elif 'top' in user_query or 'popular' in user_query:
         top_items = df_cleaned.groupby('Description')['Quantity'].sum().sort_values(ascending=False).head(10)
         st.write(top_items.reset_index())
