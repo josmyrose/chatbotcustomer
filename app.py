@@ -27,30 +27,27 @@ st.write("Welcome to RetailBot! Ask me about products, prices, or popular items.
 st.write("If you ask about products,please type find or search.")
 st.write("If you ask about popular items,please type top or popular")
 st.write("Type 'exit' to leave.")
-user_input = st.text_input("Ask me about products, prices, or popular items:").lower()
-    # Streamlit UI
+user_query = st.text_input("Ask about products, prices, or popular items:")
 
-while True:
-        #user_input = st.text_input("\nYou: ").lower()
+if user_query:
+    user_query = user_query.lower()
+    
+    if 'search' in user_query or 'find' in user_query:
+        keyword = st.text_input("Enter keyword to search products:")
+        if keyword:
+            results = df[df['Description'].str.contains(keyword, na=False)]
+            st.write(results[['StockCode', 'Description', 'UnitPrice']].drop_duplicates().head(10))
 
-        if 'exit' in user_input:
-            st.write("Goodbye!")
-            break
-        elif 'find' in user_input or 'search' in user_input:
-            keyword = st.text_input("Enter product keyword: ")
-            results = search_product(keyword)
-            st.write(results if not results.empty else "No matching products found.")
-        elif 'price' in user_input or 'range' in user_input:
-            try:
-                min_price = float(st.text_input("Min price: "))
-                max_price = float(st.text_input("Max price: "))
-                results = products_in_price_range(min_price, max_price)
-                st.write(results if not results.empty else "No products in that price range.")
-            except ValueError:
-                st.write("Please enter valid numbers.")
-        elif 'top' in user_input or 'popular' in user_input:
-            st.write(top_selling_products())
-        else:
-            st.write("Sorry, I didn't understand that. Try asking about products or prices.")
+    elif 'price' in user_query or 'range' in user_query:
+        min_price = st.number_input("Min price", min_value=0.0, value=0.0)
+        max_price = st.number_input("Max price", min_value=0.0, value=10.0)
+        if min_price < max_price:
+            results = df[(df['UnitPrice'] >= min_price) & (df['UnitPrice'] <= max_price)]
+            st.write(results[['Description', 'UnitPrice']].drop_duplicates().head(10))
 
+    elif 'top' in user_query or 'popular' in user_query:
+        top_items = df.groupby('Description')['Quantity'].sum().sort_values(ascending=False).head(10)
+        st.write(top_items.reset_index())
 
+    else:
+        st.warning("Sorry, I didn't understand that. Try using keywords like 'find', 'price', or 'top'.")
