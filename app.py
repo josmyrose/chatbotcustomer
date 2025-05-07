@@ -17,19 +17,24 @@ def top_selling_products():
     return top_items.reset_index()
 st.title("🛍️ RetailBot - Product Assistant")
 
-# Maintain chat history
-if "history" not in st.session_state:
-    st.session_state.history = []
+st.markdown("#### Chat History:")
+for msg in st.session_state.chat_history:
+    st.markdown(f"** {msg['text']}")
 
-
+# Initialize session state variables
+if 'chat_history' not in st.session_state:
+    st.session_state.chat_history = []
+if 'user_input' not in st.session_state:
+    st.session_state.user_input = ''
 
 st.write("Welcome to RetailBot! Ask me about products, prices, or popular items.")
 st.write("If you ask about products,please type find or search.")
 st.write("If you ask about popular items,please type top or popular")
 st.write("Type 'exit' to leave.")
 #user_query = st.text_input("Ask about products, prices, or popular items:")
-while True:
-    user_query = st.text_input("Ask your query (type 'exit' to stop):")
+# Text input with a stable key
+
+    user_query = st.text_input("Ask your query (type 'exit' to stop):", key='user_input')
     
     if not user_query:
         st.stop()  # Wait for user input
@@ -60,3 +65,13 @@ while True:
 
     else:
         st.warning("Sorry, I didn't understand that. Try using keywords like 'find', 'price', or 'top'.")
+         # Append user query
+        st.session_state.chat_history.append({"text": user_query})
+
+        # Simulated bot response (replace with actual model or logic)
+        bot_response = f"You asked: '{user_query}'. Here's a helpful response."
+        st.session_state.chat_history.append({"text": bot_response})
+
+        # Clear input box by resetting session state
+        st.session_state.user_input = ''
+        st.experimental_rerun()
